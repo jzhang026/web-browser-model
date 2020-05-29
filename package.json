@@ -1,0 +1,24 @@
+{
+  "name": "html-browser-model",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "node server.js",
+    "start:client": "node client.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css": "^2.2.4",
+    "images": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.1",
+    "@babel/preset-env": "^7.10.1",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5"
+  }
+}
