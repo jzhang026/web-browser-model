@@ -1,0 +1,217 @@
+{
+  "type": "document",
+  "children": [
+    {
+      "type": "element",
+      "children": [
+        {
+          "type": "text",
+          "content": "\n  "
+        },
+        {
+          "type": "element",
+          "children": [
+            {
+              "type": "text",
+              "content": "\n    "
+            },
+            {
+              "type": "element",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "\n      #container{\n        width:500px;\n        height:300px;\n        display:flex;\n        background-color:rgb(255,255,255);\n      }\n      #container #myid{\n        width:200px;\n        height:100px;\n        background-color:rgb(255,0,0)\n      }\n      #container .c1{\n        flex:1;\n        background-color:rgb(0,255,0)\n      }\n    "
+                }
+              ],
+              "childLength": 0,
+              "attributes": [],
+              "tagName": "style",
+              "parent": "head",
+              "nthChild": 0,
+              "computedStyle": {},
+              "style": {}
+            },
+            {
+              "type": "text",
+              "content": "\n  "
+            }
+          ],
+          "childLength": 1,
+          "attributes": [],
+          "tagName": "head",
+          "parent": "html",
+          "nthChild": 0,
+          "computedStyle": {},
+          "style": {}
+        },
+        {
+          "type": "text",
+          "content": "\n  "
+        },
+        {
+          "type": "element",
+          "children": [
+            {
+              "type": "text",
+              "content": "\n    "
+            },
+            {
+              "type": "element",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "\n      "
+                },
+                {
+                  "type": "element",
+                  "children": [],
+                  "childLength": 0,
+                  "attributes": [
+                    {
+                      "name": "id",
+                      "value": "myid"
+                    }
+                  ],
+                  "tagName": "div",
+                  "parent": "div",
+                  "nthChild": 0,
+                  "computedStyle": {
+                    "width": {
+                      "value": "200px",
+                      "specificity": [0, 2, 0, 0]
+                    },
+                    "height": {
+                      "value": "100px",
+                      "specificity": [0, 2, 0, 0]
+                    },
+                    "background-color": {
+                      "value": "rgb(255,0,0)",
+                      "specificity": [0, 2, 0, 0]
+                    }
+                  },
+                  "style": {
+                    "width": 200,
+                    "height": 100,
+                    "background-color": "rgb(255,0,0)",
+                    "left": 0,
+                    "right": 200,
+                    "top": 0,
+                    "bottom": 100
+                  }
+                },
+                {
+                  "type": "text",
+                  "content": "\n      "
+                },
+                {
+                  "type": "element",
+                  "children": [],
+                  "childLength": 0,
+                  "attributes": [
+                    {
+                      "name": "class",
+                      "value": "c1"
+                    }
+                  ],
+                  "tagName": "div",
+                  "parent": "div",
+                  "nthChild": 1,
+                  "computedStyle": {
+                    "flex": {
+                      "value": "1",
+                      "specificity": [0, 1, 1, 0]
+                    },
+                    "background-color": {
+                      "value": "rgb(0,255,0)",
+                      "specificity": [0, 1, 1, 0]
+                    }
+                  },
+                  "style": {
+                    "flex": 1,
+                    "background-color": "rgb(0,255,0)",
+                    "width": 300,
+                    "left": 200,
+                    "right": 500,
+                    "top": 0,
+                    "bottom": 300,
+                    "height": 300
+                  }
+                },
+                {
+                  "type": "text",
+                  "content": "\n    "
+                }
+              ],
+              "childLength": 2,
+              "attributes": [
+                {
+                  "name": "id",
+                  "value": "container"
+                }
+              ],
+              "tagName": "div",
+              "parent": "body",
+              "nthChild": 0,
+              "computedStyle": {
+                "width": {
+                  "value": "500px",
+                  "specificity": [0, 1, 0, 0]
+                },
+                "height": {
+                  "value": "300px",
+                  "specificity": [0, 1, 0, 0]
+                },
+                "display": {
+                  "value": "flex",
+                  "specificity": [0, 1, 0, 0]
+                },
+                "background-color": {
+                  "value": "rgb(255,255,255)",
+                  "specificity": [0, 1, 0, 0]
+                }
+              },
+              "style": {
+                "width": 500,
+                "height": 300,
+                "display": "flex",
+                "background-color": "rgb(255,255,255)",
+                "flexDirection": "row",
+                "alignItems": "stretch",
+                "justifyContent": "flex-start",
+                "flexWrap": "nowrap",
+                "alignContent": "center"
+              }
+            },
+            {
+              "type": "text",
+              "content": "\n  "
+            }
+          ],
+          "childLength": 1,
+          "attributes": [],
+          "tagName": "body",
+          "parent": "html",
+          "nthChild": 1,
+          "computedStyle": {},
+          "style": {}
+        },
+        {
+          "type": "text",
+          "content": "\n\n"
+        }
+      ],
+      "childLength": 2,
+      "attributes": [
+        {
+          "name": "maaa",
+          "value": "a"
+        }
+      ],
+      "tagName": "html",
+      "nthChild": 0,
+      "computedStyle": {},
+      "style": {}
+    }
+  ],
+  "childLength": 1
+}
