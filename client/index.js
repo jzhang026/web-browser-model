@@ -1,12 +1,6 @@
 const net = require('net');
-const images = require('images');
-const render = require('./htmlParser/render');
 const ResponseParser = require('./response-parser');
-const parseHTML = require('./htmlParser/html-parser').parseHTML;
 class Request {
-  // method, url = host + port + path
-  // body: k/v
-  // headers
   constructor(options) {
     this.method = options.method || 'GET';
     this.host = options.headers.host;
@@ -41,25 +35,25 @@ class Request {
     return request.join('');
   }
 
-  open(method, url) {}
-
-  send(connection) {
+  send() {
     return new Promise((resolve, reject) => {
-      if (connection) {
-        connection.write(this.toString());
+      if (this.connection) {
+        this.connection.write(this.toString());
       } else {
-        connection = net.createConnection(
+        this.connection = net.createConnection(
           {
             host: this.host,
             port: this.port,
           },
           () => {
-            connection.write(this.toString());
+            this.connection.write(this.toString());
           }
         );
       }
-      connection.on('data', (data) => {
+
+      this.connection.on('data', (data) => {
         let responseParser = new ResponseParser();
+        console.log(data.toString());
         responseParser.receive(data.toString());
         const { statusCode, statusText, headers, body } = responseParser;
         let response = {
@@ -69,7 +63,7 @@ class Request {
           body,
         };
         resolve(response);
-        connection.end();
+        this.connection.end();
       });
     });
   }
@@ -84,22 +78,5 @@ void (async function () {
     body: { name: 'adrian' },
   });
   let res = await request.send();
-  // console.log(
-  //   JSON.stringify(
-  //     parseHTML(res.body),
-  //     function replacer(key, value) {
-  //       // Filtering out properties
-  //       if (key === 'parent') {
-  //         return value.tagName;
-  //       }
-  //       return value;
-  //     },
-  //     2
-  //   )
-  // );
-  let viewport = images(800, 600);
-  let dom = parseHTML(res.body);
-  render(viewport, dom);
-
-  viewport.save('viewport.jpg');
+  console.log(JSON.stringify(res, null, 2));
 })();
