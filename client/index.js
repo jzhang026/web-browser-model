@@ -70,5 +70,5 @@ void (async function () {
     body: { name: 'adrian' },
   });
   let res = await request.send();
-  console.log(JSON.stringify(res, null, 2));
+  console.log(res);
 })();
