@@ -4,13 +4,7 @@ const server = http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('X-Foo', 'bar');
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(
-    '[hello world] [hello world] [hello world] ' +
-      '[hello world] [hello world] [hello world] ' +
-      '[hello world] [hello world] [hello world] ' +
-      '[hello world] [hello world] [hello world] ' +
-      '[hello world] [hello world] [hello world] '
-  );
+  res.end('hello world');
 });
 
 server.listen(8088);
