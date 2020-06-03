@@ -53,7 +53,6 @@ class Request {
 
       this.connection.on('data', (data) => {
         let responseParser = new ResponseParser();
-        console.log(data.toString());
         responseParser.receive(data.toString());
         const { statusCode, statusText, headers, body } = responseParser;
         let response = {
