@@ -1,5 +1,3 @@
-const { computeCss, addCSSRules } = require('./css-compute');
-const layout = require('./layout.js');
 const EOF = Symbol('EOF');
 
 let currentState = null;
@@ -40,7 +38,6 @@ function emit(token) {
         parent: top,
         nthChild: top.childLength++,
       };
-      computeCss(element, stack);
       top.children.push(element);
       !token.isSelfClosing && stack.push(element);
       currentTextNode = null;
@@ -52,10 +49,7 @@ function emit(token) {
           `<${top.tagName}> and </${token.tagName}> is not match`
         );
       }
-      if (token.tagName === 'style') {
-        addCSSRules(top.children[0].content);
-      }
-      layout(top);
+
       stack.pop();
       currentTextNode = null;
       break;
