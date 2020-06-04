@@ -168,7 +168,7 @@ function layout(element) {
   }
 
   if (mainSpace < 0) {
-    // if item main size is larger than container's, then we shrink it with a scale
+    // shrink flex items with a scale
     const scale =
       containerStyle[mainSize] / (containerStyle[mainSize] - mainSpace);
     const currentMain = mainBase;
