@@ -4,8 +4,8 @@ function render(viewport, element) {
   if (element.style) {
     const img = images(element.style.width, element.style.height);
 
-    if (element.style['background-color']) {
-      let color = element.style['background-color'] || 'rgb(0,0,0)';
+    if (element.style['backgroundColor']) {
+      let color = element.style['backgroundColor'] || 'rgb(0,0,0)';
       let match = color.match(/rgb\((\d+),\s*(\d*),\s*(\d+)\)/);
 
       img.fill(Number(match[1]), Number(match[2]), Number(match[3]), 1);

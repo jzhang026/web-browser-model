@@ -32,30 +32,34 @@ function layout(element) {
     crossSign,
     crossBase;
 
+  //  left to right in ltr; right to left in rtl
   if (style.flexDirection === 'row') {
-    // from left to right
+    // main axis
     mainSize = 'width';
     mainStart = 'left';
     mainEnd = 'right';
     mainSign = 1;
     mainBase = 0;
-    // from top to bottom
+
+    // cross axis
     crossSize = 'height';
     crossStart = 'top';
     crossEnd = 'bottom';
   }
+  // right to left in ltr; left to right in rtl
   if (style.flexDirection === 'row-reverse') {
-    // from right to left
     mainSize = 'width';
     mainStart = 'right';
     mainEnd = 'left';
     mainSign = -1;
     mainBase = style.width;
-    // from top to bottom
+
     crossSize = 'height';
     crossStart = 'top';
     crossEnd = 'bottom';
   }
+
+  // same as row but top to bottom
   if (style.flexDirection === 'column') {
     mainSize = 'height';
     mainStart = 'top';
@@ -67,6 +71,7 @@ function layout(element) {
     crossStart = 'left';
     crossEnd = 'right';
   }
+  // same as row-reverse but bottom to top
   if (style.flexDirection === 'column-reverse') {
     mainSize = 'height';
     mainStart = 'bottom';
@@ -79,6 +84,7 @@ function layout(element) {
     crossEnd = 'right';
   }
 
+  // By default, flex items will all try to fit onto one line
   if (style.flexWrap === 'wrap-reverse') {
     let temp = crossStart;
     crossStart = crossEnd;
@@ -95,6 +101,7 @@ function layout(element) {
     elementStyle[mainSize] = 0;
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
+      let itemStyle = getStyle(item);
       if (itemStyle[mainSize] !== null || itemStyle[mainSize] !== void 0)
         elementStyle[mainSize] = elementStyle[mainSize] + itemStyle[mainSize];
     }
@@ -106,7 +113,7 @@ function layout(element) {
   flexLines.push(flexLine);
   let mainSpace = elementStyle[mainSize];
   let crossSpace = 0;
-  // 收集元素进行
+
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     let itemStyle = getStyle(item);
@@ -120,7 +127,8 @@ function layout(element) {
     } else if (style.flexWrap === 'nowrap' && isAutoMainSize) {
       mainSpace -= itemStyle[mainSize];
       if (itemStyle[crossSize] !== null && itemStyle[crossSize] !== void 0) {
-        crossSpace = Math.max(crossSpace, itemStyle[crossSize]); // pick the heighest inline item
+        // final line height is decided by the heighest inline item
+        crossSpace = Math.max(crossSpace, itemStyle[crossSize]);
       }
       flexLine.push(item);
     } else {
@@ -346,19 +354,27 @@ function layout(element) {
   });
   console.log(items);
 }
+function camelize(str) {
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    })
+    .replace(/(\s|\-)+/g, '');
+}
+
 function getStyle(element) {
   if (!element.style) element.style = {};
 
   for (let prop in element.computedStyle) {
-    const p = element.computedStyle.value;
-    element.style[prop] = element.computedStyle[prop].value;
+    let camelized = camelize(prop);
+    element.style[camelized] = element.computedStyle[prop].value;
 
-    if (element.style[prop].toString().match(/px$/)) {
-      element.style[prop] = parseInt(element.style[prop]);
+    if (element.style[camelized].toString().match(/px$/)) {
+      element.style[camelized] = parseInt(element.style[camelized]);
     }
 
-    if (element.style[prop].toString().match(/^[0-9\.]+$/)) {
-      element.style[prop] = parseInt(element.style[prop]);
+    if (element.style[camelized].toString().match(/^[0-9\.]+$/)) {
+      element.style[camelized] = parseInt(element.style[camelized]);
     }
   }
 
