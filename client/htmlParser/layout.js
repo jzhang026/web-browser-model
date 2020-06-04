@@ -357,6 +357,7 @@ function layout(element) {
     }
     crossBase += crossSign * (lineCrossSize + gap);
   });
+  console.log(items);
 }
 function camelize(str) {
   return str
