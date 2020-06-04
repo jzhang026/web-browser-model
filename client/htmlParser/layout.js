@@ -1,25 +1,29 @@
+const defaultFlexContainerStyle = {
+  flexDirection: 'row',
+  alignItems: 'stretch',
+  justifyContent: 'flex-start',
+  flexWrap: 'nowrap',
+  alignContent: 'center',
+};
 function layout(element) {
   if (!element.computedStyle) return;
-  const elementStyle = getStyle(element);
-  if (elementStyle.display !== 'flex') return;
+  const containerStyle = getStyle(element);
+  if (containerStyle.display !== 'flex') return;
   const items = element.children
     .filter((e) => e.type === `element`)
     .sort((a, b) => (a.order || 0) - (b.order || 0));
-  const style = elementStyle;
 
   ['width', 'height'].forEach((size) => {
-    if (style[size] === 'auto' || style[size] === '') style[size] = null;
+    if (containerStyle[size] === 'auto' || containerStyle[size] === '')
+      containerStyle[size] = null;
   });
 
-  if (!style.flexDirection || style.flexDirection === 'auto')
-    style.flexDirection = 'row';
-  if (!style.alignItems || style.alignItems === 'auto')
-    style.alignItems = 'stretch';
-  if (!style.justifyContent || style.justifyContent === 'auto')
-    style.justifyContent = 'flex-start';
-  if (!style.flexWrap || style.flexWrap === 'auto') style.flexWrap = 'nowrap';
-  if (!style.alignContent || style.alignContent === 'auto')
-    style.alignContent = 'center';
+  // assign default style property for flex container
+  for (let prop in defaultFlexContainerStyle) {
+    if (!containerStyle[prop] || containerStyle[prop] === 'auto') {
+      containerStyle[prop] = defaultFlexContainerStyle[prop];
+    }
+  }
 
   let mainSize,
     mainStart,
@@ -33,7 +37,7 @@ function layout(element) {
     crossBase;
 
   //  left to right in ltr; right to left in rtl
-  if (style.flexDirection === 'row') {
+  if (containerStyle.flexDirection === 'row') {
     // main axis
     mainSize = 'width';
     mainStart = 'left';
@@ -47,12 +51,12 @@ function layout(element) {
     crossEnd = 'bottom';
   }
   // right to left in ltr; left to right in rtl
-  if (style.flexDirection === 'row-reverse') {
+  if (containerStyle.flexDirection === 'row-reverse') {
     mainSize = 'width';
     mainStart = 'right';
     mainEnd = 'left';
     mainSign = -1;
-    mainBase = style.width;
+    mainBase = containerStyle.width;
 
     crossSize = 'height';
     crossStart = 'top';
@@ -60,7 +64,7 @@ function layout(element) {
   }
 
   // same as row but top to bottom
-  if (style.flexDirection === 'column') {
+  if (containerStyle.flexDirection === 'column') {
     mainSize = 'height';
     mainStart = 'top';
     mainEnd = 'bottom';
@@ -72,12 +76,12 @@ function layout(element) {
     crossEnd = 'right';
   }
   // same as row-reverse but bottom to top
-  if (style.flexDirection === 'column-reverse') {
+  if (containerStyle.flexDirection === 'column-reverse') {
     mainSize = 'height';
     mainStart = 'bottom';
     mainEnd = 'top';
     mainSign = -1;
-    mainBase = style.height;
+    mainBase = containerStyle.height;
 
     crossSize = 'width';
     crossStart = 'left';
@@ -85,7 +89,7 @@ function layout(element) {
   }
 
   // By default, flex items will all try to fit onto one line
-  if (style.flexWrap === 'wrap-reverse') {
+  if (containerStyle.flexWrap === 'wrap-reverse') {
     let temp = crossStart;
     crossStart = crossEnd;
     crossEnd = temp;
@@ -96,14 +100,15 @@ function layout(element) {
   }
 
   let isAutoMainSize = false;
-  if (!style[mainSize]) {
+  if (!containerStyle[mainSize]) {
     // auto sizing
-    elementStyle[mainSize] = 0;
+    containerStyle[mainSize] = 0;
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
       let itemStyle = getStyle(item);
       if (itemStyle[mainSize] !== null || itemStyle[mainSize] !== void 0)
-        elementStyle[mainSize] = elementStyle[mainSize] + itemStyle[mainSize];
+        containerStyle[mainSize] =
+          containerStyle[mainSize] + itemStyle[mainSize];
     }
     isAutoMainSize = true;
   }
@@ -111,7 +116,7 @@ function layout(element) {
   const flexLine = [];
   const flexLines = [];
   flexLines.push(flexLine);
-  let mainSpace = elementStyle[mainSize];
+  let mainSpace = containerStyle[mainSize];
   let crossSpace = 0;
 
   for (let i = 0; i < items.length; i++) {
@@ -124,7 +129,7 @@ function layout(element) {
 
     if (itemStyle.flex) {
       flexLine.push(item);
-    } else if (style.flexWrap === 'nowrap' && isAutoMainSize) {
+    } else if (containerStyle.flexWrap === 'nowrap' && isAutoMainSize) {
       mainSpace -= itemStyle[mainSize];
       if (itemStyle[crossSize] !== null && itemStyle[crossSize] !== void 0) {
         // final line height is decided by the heighest inline item
@@ -132,10 +137,9 @@ function layout(element) {
       }
       flexLine.push(item);
     } else {
-      if (itemStyle[mainSize] > style[mainSize]) {
-        itemStyle[mainSize] = style[mainSize];
+      if (itemStyle[mainSize] > containerStyle[mainSize]) {
+        itemStyle[mainSize] = containerStyle[mainSize];
       }
-      // TODO: 如果一行的第一个元素size就超出container size。怎么处理？
       if (mainSpace < itemStyle[mainSize]) {
         flexLine.mainSpace = mainSpace;
         flexLine.crossSpace = crossSpace;
@@ -143,7 +147,7 @@ function layout(element) {
         flexLine = [item];
         flexLines.push(flexLine);
 
-        mainSpace = style[mainSize];
+        mainSpace = containerStyle[mainSize];
         crossSpace = 0;
       } else {
         flexLine.push(item);
@@ -156,16 +160,17 @@ function layout(element) {
   }
   flexLine.mainSpace = mainSpace;
 
-  // 交叉轴剩余空间
-  if (style.flexWrap === 'nowrap' || isAutoMainSize) {
-    flexLine.crossSpace = style[crossSize] || crossSpace;
+  // cross space
+  if (containerStyle.flexWrap === 'nowrap' || isAutoMainSize) {
+    flexLine.crossSpace = containerStyle[crossSize] || crossSpace;
   } else {
     flexLine.crossSpace = crossSpace;
   }
 
   if (mainSpace < 0) {
-    // 当item长度超出container长度，我们等比例收缩flex item
-    const scale = style[mainSize] / (style[mainSize] - mainSpace);
+    // if item main size is larger than container's, then we shrink it with a scale
+    const scale =
+      containerStyle[mainSize] / (containerStyle[mainSize] - mainSpace);
     const currentMain = mainBase;
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
@@ -216,27 +221,27 @@ function layout(element) {
       } else {
         let currentMain, gap;
 
-        if (style.justifyContent === 'flex-start') {
+        if (containerStyle.justifyContent === 'flex-start') {
           currentMain = mainBase;
           gap = 0;
         }
-        if (style.justifyContent === 'flex-end') {
+        if (containerStyle.justifyContent === 'flex-end') {
           currentMain = mainSpace * mainSign + mainBase;
           gap = 0;
         }
-        if (style.justifyContent === 'center') {
+        if (containerStyle.justifyContent === 'center') {
           currentMain = (mainSpace / 2) * mainSign + mainBase;
           gap = 0;
         }
-        if (style.justifyContent === 'space-between') {
+        if (containerStyle.justifyContent === 'space-between') {
           gap = (mainSpace / (items.length - 1)) * mainSign;
           currentMain = mainBase;
         }
-        if (style.justifyContent === 'space-around') {
+        if (containerStyle.justifyContent === 'space-around') {
           gap = (mainSpace / items.length) * mainSign;
           currentMain = gap / 2 + mainBase;
         }
-        if (style.justifyContent === 'space-evenly') {
+        if (containerStyle.justifyContent === 'space-evenly') {
           gap = (mainSpace / (items.length + 1)) * mainSign;
           currentMain = gap + mainBase;
         }
@@ -253,59 +258,59 @@ function layout(element) {
   }
   // compute the cross axis size
   crossSpace = 0;
-  if (!style[crossSize]) {
+  if (!containerStyle[crossSize]) {
     // no crossSize means auto sizing
     crossSpace = 0;
-    elementStyle[crossSize] = 0;
+    containerStyle[crossSize] = 0;
     for (let i = 0; i < flexLines.length; i++) {
-      elementStyle[crossSize] =
-        elementStyle[crossSize] + flexLines[i].crossSpace;
+      containerStyle[crossSize] =
+        containerStyle[crossSize] + flexLines[i].crossSpace;
     }
   } else {
-    crossSpace = style[crossSize];
+    crossSpace = containerStyle[crossSize];
     for (let i = 0; i < flexLines.length; i++) {
       crossSpace -= flexLines[i].crossSpace;
     }
   }
 
-  if (style.flexWrap === 'wrap-reverse') {
-    crossBase = style[crossSize];
+  if (containerStyle.flexWrap === 'wrap-reverse') {
+    crossBase = containerStyle[crossSize];
   } else {
     crossBase = 0;
   }
 
-  let lineSize = style[crossSize] / flexLines.length;
+  let lineSize = containerStyle[crossSize] / flexLines.length;
 
   let gap;
 
-  if (style.alignContent === 'flex-start') {
+  if (containerStyle.alignContent === 'flex-start') {
     crossBase += 0;
     gap = 0;
   }
-  if (style.alignContent === 'flex-end') {
+  if (containerStyle.alignContent === 'flex-end') {
     crossBase += crossSign * crossSpace;
     gap = 0;
   }
-  if (style.alignContent === 'center') {
+  if (containerStyle.alignContent === 'center') {
     crossBase += (crossSign * crossSpace) / 2;
     gap = 0;
   }
-  if (style.alignContent === 'space-between') {
+  if (containerStyle.alignContent === 'space-between') {
     crossBase += 0;
     gap = crossSpace / (flexLines.length - 1);
   }
-  if (style.alignContent === 'space-around') {
+  if (containerStyle.alignContent === 'space-around') {
     gap = crossSpace / flexLines.length;
     crossBase += (crossSign * step) / 2;
   }
-  if (style.alignContent === 'stretch') {
+  if (containerStyle.alignContent === 'stretch') {
     crossBase += 0;
     gap = 0;
   }
 
   flexLines.forEach(function (items) {
     let lineCrossSize =
-      style.alignContent === 'stretch'
+      containerStyle.alignContent === 'stretch'
         ? items.crossSpace + crossSpace / flexLines.length
         : items.crossSpace;
 
@@ -313,7 +318,7 @@ function layout(element) {
       const item = items[i];
       const itemStyle = getStyle(item);
 
-      const align = itemStyle.alignSelf || style.alignItems;
+      const align = itemStyle.alignSelf || containerStyle.alignItems;
       if (itemStyle[crossSize] === null) {
         itemStyle[crossSize] = align === 'stretch' ? lineCrossSize : 0;
       }
@@ -352,7 +357,6 @@ function layout(element) {
     }
     crossBase += crossSign * (lineCrossSize + gap);
   });
-  console.log(items);
 }
 function camelize(str) {
   return str
