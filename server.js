@@ -8,8 +8,8 @@ const server = http.createServer((req, res) => {
   <head>
     <style>
       #container{
-        width:500px;
         height:300px;
+        width: 700px;
         display:flex;
         background-color:rgb(255,255,255);
       }
@@ -19,8 +19,18 @@ const server = http.createServer((req, res) => {
         background-color:rgb(255,0,0)
       }
       #container .c1{
-        flex:1;
+        width: 100px;
         background-color:rgb(0,255,0)
+      }
+      #container > .a {
+        width:50px;
+        height: 150px;
+        background-color:rgb(0,0,255);
+      }
+      .b {
+        width:70px;
+        background-color:rgb(222,122,255);
+        align-self: stretch;
       }
     </style>
   </head>
@@ -28,6 +38,9 @@ const server = http.createServer((req, res) => {
     <div id="container">
       <div id="myid"></div>
       <div class="c1"></div>
+      <div class='a'></div>
+      <div class='a'></div>
+      <div class='b'></div>
     </div>
   </body>
 
