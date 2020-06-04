@@ -1,5 +1,4 @@
 const { computeCss, addCSSRules } = require('./css-compute');
-const layout = require('./layout.js');
 const EOF = Symbol('EOF');
 
 let currentState = null;
@@ -55,7 +54,6 @@ function emit(token) {
       if (token.tagName === 'style') {
         addCSSRules(top.children[0].content);
       }
-      layout(top);
       stack.pop();
       currentTextNode = null;
       break;
