@@ -1,11 +1,14 @@
 {
   "name": "html-browser-model",
   "version": "1.0.0",
-  "description": "",
+  "description": "this is a model shows how a modern web browser works to render HTML string  into an image",
+  "engines": {
+    "node": "10.x"
+  },
   "main": "client.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:server": "node server.js",
+    "test": "jest",
+    "start:server": "nodemon server.js",
     "start:client": "node client.js"
   },
   "keywords": [],
@@ -19,6 +22,7 @@
     "@babel/core": "^7.10.1",
     "@babel/preset-env": "^7.10.1",
     "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
     "prettier": "^2.0.5"
   }
 }
