@@ -20,3 +20,5 @@ yarn start:client
 ```
 
 👀you will found a rendered `viewport.img` in your root folder.
+
+✨the [slides](https://docs.google.com/presentation/d/1Lrxr_NYeH4VAlV5-mAhmp8I8gjhkG-H5wsqH8AEmtUI/edit?usp=sharing) explains how it works. 
