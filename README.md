@@ -1,5 +1,5 @@
 #### How to start
-⚠️this tutorial require `node 10.x`, due to some constraint of low-level image render library.
+> ⚠️this tutorial require `node 10.x`, due to some constraint of low-level image render library.
 
 1. install the packages
 
