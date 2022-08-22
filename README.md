@@ -24,6 +24,3 @@ yarn start:client
 ##### Other materials
 ✨ [Slides](https://github.com/jzhang026/web-browser-model/blob/master/slides/Toy%20Browser.pdf)
 
-👾 [video](https://youtu.be/WRgeNqVZXEU)
-
-> 以上内容是极客大学，前端训练营的一部分。详情请参考 https://u.geekbang.org/subject/fe/1000447
